@@ -73,8 +73,12 @@
                         data: { favorited: true },
                         headers: { 'X-CSRFToken': window.n.options.csrf_token },
                         dataType: 'json',
-                        success: function (data) { console.log(data) },
-                        failure: function (data) { console.log(data) }
+                        success: function (data) {
+                            //console.log(data) 
+                        },
+                        failure: function (data) {
+                            //console.log(data) 
+                        }
                     });
                 });
 
@@ -85,8 +89,12 @@
                         data: { favorited: false },
                         headers: { 'X-CSRFToken': window.n.options.csrf_token },
                         dataType: 'json',
-                        success: function (data) { console.log(data) },
-                        failure: function (data) { console.log(data) }
+                        success: function (data) {
+                            //console.log(data) 
+                        },
+                        failure: function (data) {
+                            //console.log(data) 
+                        }
                     });
                 });
             });
@@ -94,22 +102,22 @@
 
 
             function processPageCount(response, index, mangaIndexes) {
-                console.log(index)
+                // console.log(index)
                 var html = jQuery.parseHTML(response);
                 var dom = jQuery(html);
                 var pageCount = dom.find('div.tag-container.field-name:contains("Pages")>span>a>span').text()
 
                 var galleryDom = mangaIndexes[index].galleryDom;
 
-                console.log(pageCount);
-                console.log(galleryDom);
+                // console.log(pageCount);
+                // console.log(galleryDom);
 
                 galleryDom.find('div.userscript_bar').append('<div class="userscript_bar_pageCount" style="float:left;width:25px;height:20px;"><span>' + pageCount + '</span></div>')
             }
 
             function getPageHttp(mangaIndexes, index) {
                 let galleryId = mangaIndexes[index].mangaGalleryId;
-                console.log('Making http call for galleryId:' + galleryId)
+                // console.log('Making http call for galleryId:' + galleryId)
                 return jQuery.get('/g/' + galleryId)
                     .done(function (response) {
                         processPageCount(response, index, mangaIndexes)
@@ -122,15 +130,15 @@
 
                 function next() {
                     if (currentIndex >= mangaIndexes.length && ongoingCalls === 0) {
-                        console.log("All calls completed");
+                         // console.log("All calls completed");
                         return;
                     }
 
                     while (ongoingCalls < parallelLimit && currentIndex < mangaIndexes.length) {
 
-                        console.log('Before making http call, index:' + currentIndex);
+                       // console.log('Before making http call, index:' + currentIndex);
                         getPageHttp(mangaIndexes, currentIndex)
-                            .always(function() {
+                            .always(function () {
                                 ongoingCalls--;
                                 next();
                             });
